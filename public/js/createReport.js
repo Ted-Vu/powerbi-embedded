@@ -1,5 +1,5 @@
 let models = window["powerbi-client"].models;
-let reportContainer = $("#report-container").get(0);
+let reportContainer = $("#report-container-create").get(0);
 let reportViewContainer = $("#report-view-container").get(0);
 
 // Initialize iframe for embedding report
