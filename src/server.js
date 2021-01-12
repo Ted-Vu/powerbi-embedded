@@ -55,7 +55,7 @@ app.post("/", function (req, res) {
       });
       res.sendFile(path.join(__dirname + "/../views/index.html"));
     } else {
-      res.redirect("https://fcn.momentumsystems.com.au/");
+      res.sendFile(path.join(__dirname + "/../views/404.html"));
     }
   });
 });
@@ -64,14 +64,16 @@ app.get("/", function (req, res) {
   client.get(req.cookies.USER, function (err, reply) {
     if (
       reply !== undefined &&
+      reply !== null &&
       req.cookies.PBESESSIONID !== undefined &&
+      req.cookies.PBESESSIONID !== null &&
       validator.isUUID(req.cookies.PBESESSIONID, 4) &&
       validator.isUUID(reply, 4) &&
       reply === req.cookies.PBESESSIONID
     ) {
       res.sendFile(path.join(__dirname + "/../views/index.html"));
     } else {
-      res.redirect("https://fcn.momentumsystems.com.au/");
+      res.sendFile(path.join(__dirname + "/../views/404.html"));
     }
   });
 });
@@ -80,14 +82,16 @@ app.get("/createReport.html", function (req, res) {
   client.get(req.cookies.USER, function (err, reply) {
     if (
       reply !== undefined &&
+      reply !== null &&
       req.cookies.PBESESSIONID !== undefined &&
+      req.cookies.PBESESSIONID !== null &&
       validator.isUUID(req.cookies.PBESESSIONID, 4) &&
       validator.isUUID(reply, 4) &&
       reply === req.cookies.PBESESSIONID
     ) {
       res.sendFile(path.join(__dirname + "/../views/createReport.html"));
     } else {
-      res.redirect("https://fcn.momentumsystems.com.au/");
+      res.sendFile(path.join(__dirname + "/../views/404.html"));
     }
   });
 });
@@ -97,7 +101,9 @@ app.get("/getAllReports", function (req, res) {
   client.get(req.cookies.USER, async function (err, reply) {
     if (
       reply !== undefined &&
+      reply !== null &&
       req.cookies.PBESESSIONID !== undefined &&
+      req.cookies.PBESESSIONID !== null &&
       validator.isUUID(req.cookies.PBESESSIONID, 4) &&
       validator.isUUID(reply, 4) &&
       reply === req.cookies.PBESESSIONID
@@ -105,7 +111,7 @@ app.get("/getAllReports", function (req, res) {
       let reportsRes = await getAllReports();
       res.status(reportsRes.status).send(reportsRes);
     } else {
-      res.redirect("https://fcn.momentumsystems.com.au/");
+      res.sendFile(path.join(__dirname + "/../views/404.html"));
     }
   });
 });
@@ -116,7 +122,9 @@ app.get("/getEmbedToken", function (req, res) {
     // 4 here is uuid version 4
     if (
       reply !== undefined &&
+      reply !== null &&
       req.cookies.PBESESSIONID !== undefined &&
+      req.cookies.PBESESSIONID !== null &&
       validator.isUUID(req.cookies.PBESESSIONID, 4) &&
       validator.isUUID(reply, 4) &&
       reply === req.cookies.PBESESSIONID
@@ -135,10 +143,10 @@ app.get("/getEmbedToken", function (req, res) {
         let result = await embedToken.getEmbedInfo();
         res.status(result.status).send(result);
       } else {
-        res.redirect("https://fcn.momentumsystems.com.au/");
+        res.sendFile(path.join(__dirname + "/../views/404.html"));
       }
     } else {
-      res.redirect("https://fcn.momentumsystems.com.au/");
+      res.sendFile(path.join(__dirname + "/../views/404.html"));
     }
   });
 });

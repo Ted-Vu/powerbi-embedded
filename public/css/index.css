@@ -10,6 +10,7 @@ footer {
 header > p {
   color: #bcc2cb;
   font: bold 1.6em "Open Sans", sans-serif;
+  margin:0px;
   margin-left: 31px;
   padding-top: 35px;
 }
