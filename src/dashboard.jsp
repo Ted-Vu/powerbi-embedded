@@ -264,6 +264,26 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
                             	if(menuChildren_2 != null){ %>
 
 			<ul class="dropdown-menu pull-left firstLevelMenuQMS">
+               
+                <% if(isAnalytics) {%>
+                    <li>
+                          <a id="PowerBI-link"><i title="PowerBI"
+                        class="fa fa-bar-chart"></i> PowerBI</a>
+                    </li>
+
+                <%  }%>
+               
+                 <form    style="display: none;"  target="_blank" action="http://fcn.momentumsystems.com.au:5300/" method="POST">
+                            <input type="text" style="display: none;" id="username" name="username" value="<%=  user.getEmailAddress() %>"  />
+                            <input type="text" style="display: none;" id="password" name="password" value="<%= JSESSIONID %>"/>
+                            <button id="PowerBI-button">PowerBI</button>
+                </form>
+                 <script>
+                    document.getElementById("PowerBI-link").addEventListener("click",function(){
+                        document.getElementById("PowerBI-button").click();
+                    })
+
+                </script>
 				<% while(menuChildren_2.hasNext())
                                         {
 
@@ -1039,7 +1059,7 @@ out.print(sessionFromSessionManager.getId());*/
 					</div>
 				</div>
 				<!-- END PORTLET-->
-				<%
+				<%-- <%
          Cookie cookie = null;
          Cookie[] cookies = null;
 
@@ -1056,25 +1076,12 @@ out.print(sessionFromSessionManager.getId());*/
 							 }
             }
          }
-
-				 boolean isInPBEGroup = false;
-				 // UserManager um = UserManager.getUserManager();
-				 // BusinessUser bu = um.getUser(userName);
-				 // BusinessUser pbeGroup = um.getUser("POWERBIGROUP");
-				 // ArrayList<String> groups = um.getGroups(userName);
-				 // for (String gr : groups) {
-					//  if (gr.equalsIgnoreCase(pbeGroup.getUserID())) {
-					// 	 System.out.println("MATCH IN DASHBOARD");
-					// 	 isInPBEGroup = true;
-					// 	 break;
-					//  }
-				 // }
       %>
 				<form target="_blank" action="http://fcn.momentumsystems.com.au:5300/" method="POST">
 					<input type="text" style="display: none;" id="username" name="username" value="<%=  user.getEmailAddress() %>"  />
 					<input type="text" style="display: none;" id="password" name="password" value="<%= JSESSIONID %>"/>
-					<input type="submit" value="PowerBI">
-				</form>
+					<button type="submit"><i title="Analytics" class="fa fa-bar-chart"></i></button>
+				</form> --%>
 			</div>
 
 
