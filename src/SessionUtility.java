@@ -63,26 +63,25 @@ public class SessionUtility {
       userName = connectToLiferayAndExecute("GET_USER_FROM_SESSION", sessionID, "");
       userName = userName.replace("\"", "");
 
-      // validate to allow user group
+      // validate to allow user in specific group to use the application
       boolean isInPBEGroup = false;
       UserManager um = UserManager.getUserManager();
       BusinessUser bu = um.getUser(userName);
-      BusinessUser pbeGroup = um.getUser("POWERBIGROUP");
+      BusinessUser pbeUserGroup = um.getUser("POWERBIUSER");
+      BusinessUser pbeAdminGroup = um.getUser("POWERBIADMIN");
       ArrayList<String> groups = um.getGroups(userName);
       for (String gr : groups) {
-        if (gr.equalsIgnoreCase(pbeGroup.getUserID())) {
-          System.out.println("MATCH");
-          isInPBEGroup = true;
-          break;
+        // System.out.println("DEBUG PBE: " + gr + " " + pbeAdminGroup.getUserID() + " " + pbeUserGroup.getUserID());
+        if (pbeAdminGroup != null && gr.equalsIgnoreCase(pbeAdminGroup.getUserID())) {
+           Jedis jedis = new Jedis("localhost");
+           jedis.set("admin;" + userName, sessionID);
+        }else if(pbeUserGroup != null && gr.equalsIgnoreCase(pbeUserGroup.getUserID())){
+           Jedis jedis = new Jedis("localhost");
+           jedis.set("normal;" + userName, sessionID);
         }
       }
-
-      if (isInPBEGroup) {
-        userNames.put(sessionID, userName);
-        userSessions.put(userName, sessionID);
-        Jedis jedis = new Jedis("localhost");
-        jedis.set(userName, sessionID);
-      }
+       userNames.put(sessionID, userName);
+       userSessions.put(userName, sessionID);
     }
 
     // DebugUtility.debug("Getting Session ID 2:"+userName);

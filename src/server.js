@@ -38,7 +38,7 @@ app.use(
 app.post("/", function (req, res) {
   const userName = req.body.username;
 
-  client.get(userName, function (err, reply) {
+  client.get("admin;" + userName, function (err, reply) {
     const PBESessionID = uuidv4();
 
     if (reply === req.body.password) {
@@ -55,8 +55,27 @@ app.post("/", function (req, res) {
       });
       res.sendFile(path.join(__dirname + "/../views/index.html"));
     } else {
-      res.sendFile(path.join(__dirname + "/../views/404.html"));
-    }
+        client.get("normal;" + userName, function (err, reply) {
+            const PBESessionID = uuidv4();
+
+            if (reply === req.body.password) {
+              client.set("PBE".concat(userName), PBESessionID, redis.print); // => "Reply: OK"
+
+              // set client cookie here
+              res.cookie("PBESESSIONID", PBESessionID, {
+                httpOnly: true,
+              });
+
+              res.cookie("USER", "PBE".concat(userName), {
+                httpOnly: true,
+                encode: (v) => v, // specify this option to turn off encoding url
+              });
+              res.sendFile(path.join(__dirname + "/../views/normalUser.html"));
+            } else {
+              res.sendFile(path.join(__dirname + "/../views/404.html"));
+            }
+          });
+      }
   });
 });
 
