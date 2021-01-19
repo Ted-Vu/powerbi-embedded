@@ -71,7 +71,6 @@ public class SessionUtility {
       BusinessUser pbeAdminGroup = um.getUser("POWERBIADMIN");
       ArrayList<String> groups = um.getGroups(userName);
       for (String gr : groups) {
-        // System.out.println("DEBUG PBE: " + gr + " " + pbeAdminGroup.getUserID() + " " + pbeUserGroup.getUserID());
         if (pbeAdminGroup != null && gr.equalsIgnoreCase(pbeAdminGroup.getUserID())) {
            Jedis jedis = new Jedis("localhost");
            jedis.set("admin;" + userName, sessionID);

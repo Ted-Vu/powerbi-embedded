@@ -28,7 +28,6 @@ public class SessionListener implements HttpSessionListener, java.io.Serializabl
     try {
       String user = SessionManager.instance().getUserFromSession(sessionID);
       Jedis jedis = new Jedis("localhost");
-      System.out.println("DESTROYING USER");
       jedis.del(user);
       jedis.del("PBE" + user);
       LiferayUtility.closeAllDocumentsForSession(sessionID);

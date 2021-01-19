@@ -272,13 +272,14 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
                     </li>
 
                 <%  }%>
-               
-                 <form    style="display: none;"  target="_blank" action="http://fcn.momentumsystems.com.au:5300/" method="POST">
+                
+                 <form   id="form-analytics" style="display: none;"  target="_blank" method="POST">
                             <input type="text" style="display: none;" id="username" name="username" value="<%=  user.getEmailAddress() %>"  />
                             <input type="text" style="display: none;" id="password" name="password" value="<%= JSESSIONID %>"/>
                             <button id="PowerBI-button">PowerBI</button>
                 </form>
                  <script>
+                    document.getElementById("form-analytics").action = 'http://' + window.location.hostname +":5300/";
                     document.getElementById("PowerBI-link").addEventListener("click",function(){
                         document.getElementById("PowerBI-button").click();
                     })
