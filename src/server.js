@@ -1,3 +1,4 @@
+require("dotenv").config();
 let path = require("path");
 let embedToken = require(__dirname + "/embedConfigService.js");
 const utils = require(__dirname + "/utils.js");
@@ -19,7 +20,7 @@ app.use("/js", express.static("./node_modules/powerbi-client/dist/")); // Redire
 app.use("/css", express.static("./node_modules/bootstrap/dist/css/")); // Redirect CSS bootstrap
 app.use("/public", express.static("./public/")); // Use custom JS and CSS files
 
-// this application will run on port 5300 
+// this application will run on port 5300
 const port = process.env.PORT || 5300;
 
 console.log(process.env);
@@ -56,27 +57,27 @@ app.post("/", function (req, res) {
       });
       res.sendFile(path.join(__dirname + "/../views/index.html"));
     } else {
-        client.get("normal;" + userName, function (err, reply) {
-            const PBESessionID = uuidv4();
+      client.get("normal;" + userName, function (err, reply) {
+        const PBESessionID = uuidv4();
 
-            if (reply === req.body.password) {
-              client.set("PBE".concat(userName), PBESessionID, redis.print); // => "Reply: OK"
+        if (reply === req.body.password) {
+          client.set("PBE".concat(userName), PBESessionID, redis.print); // => "Reply: OK"
 
-              // set client cookie here
-              res.cookie("PBESESSIONID", PBESessionID, {
-                httpOnly: true,
-              });
-
-              res.cookie("USER", "PBE".concat(userName), {
-                httpOnly: true,
-                encode: (v) => v, // specify this option to turn off encoding url
-              });
-              res.sendFile(path.join(__dirname + "/../views/normalUser.html"));
-            } else {
-              res.sendFile(path.join(__dirname + "/../views/404.html"));
-            }
+          // set client cookie here
+          res.cookie("PBESESSIONID", PBESessionID, {
+            httpOnly: true,
           });
-      }
+
+          res.cookie("USER", "PBE".concat(userName), {
+            httpOnly: true,
+            encode: (v) => v, // specify this option to turn off encoding url
+          });
+          res.sendFile(path.join(__dirname + "/../views/normalUser.html"));
+        } else {
+          res.sendFile(path.join(__dirname + "/../views/404.html"));
+        }
+      });
+    }
   });
 });
 
