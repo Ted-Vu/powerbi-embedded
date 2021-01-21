@@ -4,7 +4,7 @@
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>404 </title>
+      <title>404</title>
   
       <link  rel="stylesheet" href="../public/css/style.css" />
       <link rel="stylesheet" href="../public/css/index.css">
@@ -13,8 +13,12 @@
    <body>
       <header class="page-header">
          <p id="page-title">
-            <a href="https://fcn.momentumsystems.com.au/portal/group/guest/momentum">
-            <img class="logo-img" src="https://fcn.momentumsystems.com.au/theme-resources/assets/admin/layout/img/logo-app.png">
+            <a id="redirect" >
+                <img id="icon" class="logo-img">
+                <script>
+                    document.getElementById("icon").src = "https://" + window.location.hostname +"/theme-resources/assets/admin/layout/img/logo-app.png";
+                    document.getElementById("redirect").href = "https://" + window.location.hostname + "/portal/group/guest/momentum";
+                </script>
             </a>
         </p>
       </header>

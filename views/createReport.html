@@ -12,14 +12,18 @@ Licensed under the MIT license. -->
     <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/index.css">
-    <title>Embedded Power BI report</title>
+    <title>Analytics - PowerBI</title>
 </head>
 
 <body>
     <header class="page-header">
         <p id="page-title">
-            <a href="https://fcn.momentumsystems.com.au/portal/group/guest/momentum">
-                <img class="logo-img" src="https://fcn.momentumsystems.com.au/theme-resources/assets/admin/layout/img/logo-app.png">
+            <a id="redirect" >
+                <img id="icon" class="logo-img">
+                <script>
+                    document.getElementById("icon").src = "https://" + window.location.hostname +"/theme-resources/assets/admin/layout/img/logo-app.png";
+                    document.getElementById("redirect").href = "https://" + window.location.hostname + "/portal/group/guest/momentum";
+                </script>
             </a>
         </p>
     </header>

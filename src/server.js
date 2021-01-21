@@ -12,7 +12,6 @@ const app = express();
 
 // use this middleware to parse cookie data
 app.use(cookieParser());
-
 // Prepare server for Bootstrap, jQuery and PowerBI files
 app.use("/js", express.static("./node_modules/bootstrap/dist/js/")); // Redirect bootstrap JS
 app.use("/js", express.static("./node_modules/jquery/dist/")); // Redirect JS jQuery
@@ -20,10 +19,13 @@ app.use("/js", express.static("./node_modules/powerbi-client/dist/")); // Redire
 app.use("/css", express.static("./node_modules/bootstrap/dist/css/")); // Redirect CSS bootstrap
 app.use("/public", express.static("./public/")); // Use custom JS and CSS files
 
+// this application will run on port 5300 
 const port = process.env.PORT || 5300;
 
+console.log(process.env);
+
 // start a redis server on port 6379
-const REDIS_PORT = process.env.PORT || 6379;
+const REDIS_PORT = process.env.REDIS_PORT || 6379;
 const client = redis.createClient(REDIS_PORT);
 
 app.use(bodyParser.json());
@@ -34,7 +36,6 @@ app.use(
   })
 );
 
-// redirect to index.html if entering "/"
 app.post("/", function (req, res) {
   const userName = req.body.username;
 
@@ -135,7 +136,7 @@ app.get("/getAllReports", function (req, res) {
   });
 });
 
-// exposed REST APIs from which client can call, here client call to get the embed token 2 APIs called client-server, server-powerBI
+// exposed REST APIs from which client can call, here client call to get the embed token, 2 APIs called client-server, server-powerBI
 app.get("/getEmbedToken", function (req, res) {
   client.get(req.cookies.USER, async function (err, reply) {
     // 4 here is uuid version 4
