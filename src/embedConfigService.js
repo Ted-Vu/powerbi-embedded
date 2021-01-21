@@ -43,7 +43,7 @@ async function configReportIdByName(reportName) {
   const resultJson = await result.json();
   const reports = resultJson.value;
   for (report of reports) {
-    if (report.name === reportName) {
+    if (report.name === reportName || report.name.replace(/ /g, '') === reportName) {
       config.reportId = report.id;
     }
   }

@@ -21,12 +21,11 @@ app.use("/css", express.static("./node_modules/bootstrap/dist/css/")); // Redire
 app.use("/public", express.static("./public/")); // Use custom JS and CSS files
 
 // this application will run on port 5300
-const port = process.env.PORT || 5300;
+const port = process.env.PORT;
 
-console.log(process.env);
 
 // start a redis server on port 6379
-const REDIS_PORT = process.env.REDIS_PORT || 6379;
+const REDIS_PORT = process.env.REDIS_PORT;
 const client = redis.createClient(REDIS_PORT);
 
 app.use(bodyParser.json());
