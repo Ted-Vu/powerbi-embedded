@@ -20,12 +20,12 @@ app.use("/js", express.static("./node_modules/powerbi-client/dist/")); // Redire
 app.use("/css", express.static("./node_modules/bootstrap/dist/css/")); // Redirect CSS bootstrap
 app.use("/public", express.static("./public/")); // Use custom JS and CSS files
 
-// this application will run on port 5300
-const port = process.env.PORT;
+// specify the port in .env created at root dir, if no .env exists => default to port 5300
+const port = process.env.PORT || 5300;
 
 
-// start a redis server on port 6379
-const REDIS_PORT = process.env.REDIS_PORT;
+// specify the port in .env created at root dir, if no .env exists => default to port 6379
+const REDIS_PORT = process.env.REDIS_PORT || 6379;
 const client = redis.createClient(REDIS_PORT);
 
 app.use(bodyParser.json());
@@ -43,7 +43,9 @@ app.post("/", function (req, res) {
     const PBESessionID = uuidv4();
 
     if (reply === req.body.password) {
-      client.set("PBE".concat(userName), PBESessionID, redis.print); // => "Reply: OK"
+
+      //expiry time = one day
+      client.set("PBE".concat(userName),  PBESessionID,'EX', 60*60*24, redis.print); // => "Reply: OK"
 
       // set client cookie here
       res.cookie("PBESESSIONID", PBESessionID, {
@@ -60,7 +62,9 @@ app.post("/", function (req, res) {
         const PBESessionID = uuidv4();
 
         if (reply === req.body.password) {
-          client.set("PBE".concat(userName), PBESessionID, redis.print); // => "Reply: OK"
+
+          // expiry time = one day
+          client.set("PBE".concat(userName),  PBESessionID,'EX', 60*60*24, redis.print); // => "Reply: OK"
 
           // set client cookie here
           res.cookie("PBESESSIONID", PBESessionID, {
@@ -156,9 +160,12 @@ app.get("/getEmbedToken", function (req, res) {
           error: configCheckResult,
         };
       }
+
       let queryData = req._parsedUrl.query;
+      
       if (validator.isAscii(queryData)) {
         let reportName = queryData.split("&")[0].split("=")[1];
+        reportName = decodeURIComponent(reportName);
         await embedToken.configReportIdByName(reportName);
         let result = await embedToken.getEmbedInfo();
         res.status(result.status).send(result);
