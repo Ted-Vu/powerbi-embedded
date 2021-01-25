@@ -28,7 +28,7 @@ $.ajax({
   },
 
   error: function (err) {
-    window.location.href = "https://fcn.momentumsystems.com.au/";
+      window.location.href = "https://" + window.location.hostname;
   },
 });
 
@@ -38,47 +38,20 @@ $("#create-button").on("click", function (e) {
   e.preventDefault();
   window.open("/createReport.html", "_blank");
 });
-$("#delete-button").on("click", function (e) {
-  e.preventDefault();
-  let formName = document
-    .getElementById("reportName")
-    .value.split(" ")
-    .join("");
 
-  $.ajax({
-    type: "GET",
-    url: "/getEmbedToken",
-    data: {
-      formName: formName,
-      mode: "DELETE",
-    },
-    dataType: "json",
-    success: function (embedData) {
-      // calling MS REST APIs to delete
-      // repopulate dropdown
-    },
-
-    error: function (err) {
-      alert("Your PBE Session expired you will be redirected");
-      window.location.href = "https://fcn.momentumsystems.com.au/";
-    },
-  });
-});
 
 $("#view-button").on("click", function (e) {
   e.preventDefault();
 
-  let formName = document
-    .getElementById("reportName")
-    .value.split(" ")
-    .join("");
+  
+
+  let reportName = document.getElementById("reportName").value;
 
   $.ajax({
     type: "GET",
     url: "/getEmbedToken",
     data: {
-      formName: formName,
-      mode: "VIEW",
+      reportName: reportName,
     },
     dataType: "json",
     success: function (embedData) {
@@ -133,7 +106,7 @@ $("#view-button").on("click", function (e) {
 
     error: function (err) {
       alert("Your PBE Session expired you will be redirected");
-      window.location.href = "https://fcn.momentumsystems.com.au/";
+      window.location.href = "https://" + window.location.hostname;
     },
   });
 });
@@ -141,24 +114,17 @@ $("#view-button").on("click", function (e) {
 $("#edit-button").on("click", function (e) {
   e.preventDefault();
 
-  let reportName = document
-    .getElementById("reportName")
-    .value.split(" ")
-    .join("");
+  let reportName = document.getElementById("reportName").value;
 
   $.ajax({
     type: "GET",
     url: "/getEmbedToken",
     data: {
       reportName: reportName,
-      mode: "EDIT",
     },
     dataType: "json",
     success: function (embedData) {
-      // Create a config object with type of the object, Embed details and Token Type
-      // config object determines HOW and WHAT embedded looks like
-      // ALGORITHMS
-      // 1. User hits "report" button, handle onClick by making an AJAX request and load powerBI
+      
       let reportLoadConfig = {
         type: "report",
         tokenType: models.TokenType.Embed,
@@ -211,7 +177,7 @@ $("#edit-button").on("click", function (e) {
 
     error: function (err) {
       alert("Your PBE Session expired you will be redirected");
-      window.location.href = "https://fcn.momentumsystems.com.au/";
+      window.location.href = "https://" + window.location.hostname;
     },
   });
 });

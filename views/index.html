@@ -15,7 +15,7 @@ Licensed under the MIT license. -->
     <title>Analytics - PowerBI</title>
 </head>
 
-<body>
+<body id="content">
 	<div id="mySidepanel" class="sidepanel">
   		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         	<form>
@@ -41,7 +41,7 @@ Licensed under the MIT license. -->
         </p>
     </header>
     <div >    
-    	<button onClick="openNav()" type="button" class="setting-button"> Select Report </button>
+    	<button onClick="openNav()" type="button" class="setting-button" id="setting-button"> Select Report </button>
 	</div>
     <main class="row">
         <section id="report-container" class="embed-container col-md-auto">
@@ -53,7 +53,6 @@ Licensed under the MIT license. -->
     <script src="../public/js/index.js"></script>
     <script>
     	function openNav() {
-    		console.log("Opening")
     	  	document.getElementById("mySidepanel").style.width = "250px";
     	}
 

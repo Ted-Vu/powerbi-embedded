@@ -272,14 +272,33 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
                     </li>
 
                 <%  }%>
+                  <%
+                          Cookie cookie = null;
+                          Cookie[] cookies = null;
+
+                          // Get an array of Cookies associated with the this domain
+                          cookies = request.getCookies();
+                          String JSESSIONID = "";
+                          String USER_UUID = "";
+                          if( cookies != null ) {
+                                for (int i = 0; i < cookies.length; i++) {
+                                     cookie = cookies[i];
+                                     if(cookie.getName().equals("JSESSIONID")){
+                                         JSESSIONID = cookie.getValue();
+                                         break;
+                                     }
+                                }
+                          }
+                %>
                 
-                 <form   id="form-analytics" style="display: none;"  target="_blank" method="POST">
+                 <form   id="form-analytics" style="display: none;"  target="_blank" action="" method="POST">
                             <input type="text" style="display: none;" id="username" name="username" value="<%=  user.getEmailAddress() %>"  />
                             <input type="text" style="display: none;" id="password" name="password" value="<%= JSESSIONID %>"/>
                             <button id="PowerBI-button">PowerBI</button>
                 </form>
                  <script>
                     document.getElementById("form-analytics").action = 'http://' + window.location.hostname +":5300/";
+                    console.log(document.getElementById("form-analytics").action);
                     document.getElementById("PowerBI-link").addEventListener("click",function(){
                         document.getElementById("PowerBI-button").click();
                     })

@@ -13,7 +13,8 @@ const app = express();
 
 // use this middleware to parse cookie data
 app.use(cookieParser());
-// Prepare server for Bootstrap, jQuery and PowerBI files
+
+// Prepare server for Bootstrap, JQuery and PowerBI files
 app.use("/js", express.static("./node_modules/bootstrap/dist/js/")); // Redirect bootstrap JS
 app.use("/js", express.static("./node_modules/jquery/dist/")); // Redirect JS jQuery
 app.use("/js", express.static("./node_modules/powerbi-client/dist/")); // Redirect JS PowerBI
