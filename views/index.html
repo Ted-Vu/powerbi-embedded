@@ -12,10 +12,14 @@ Licensed under the MIT license. -->
     <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/index.css">
+    <script type="text/javascript" src="../public/js/data.json"></script>
+    <script type="text/javascript" src="../public/js/data.js"></script>
     <title>Analytics - PowerBI</title>
 </head>
 
-<body id="content">
+<body id="content" onload="load()">
+
+
 	<div id="mySidepanel" class="sidepanel">
   		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         	<form>
@@ -33,10 +37,6 @@ Licensed under the MIT license. -->
         <p id="page-title">
             <a id="redirect" >
                 <img id="icon" class="logo-img">
-                <script>
-                    document.getElementById("icon").src = "https://" + window.location.hostname +"/theme-resources/assets/admin/layout/img/logo-app.png";
-                    document.getElementById("redirect").href = "https://" + window.location.hostname + "/portal/group/guest/momentum";
-                </script>
             </a>
         </p>
     </header>
@@ -59,6 +59,8 @@ Licensed under the MIT license. -->
     	function closeNav() {
       		document.getElementById("mySidepanel").style.width = "0";
     	}
+
+    	document.getElementById("view-button").click();
 	</script>
 
 </body>

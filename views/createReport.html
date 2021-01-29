@@ -12,18 +12,16 @@ Licensed under the MIT license. -->
     <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/index.css">
+    <script type="text/javascript" src="../public/js/data.json"></script>
+    <script type="text/javascript" src="../public/js/data.js"></script>
     <title>Analytics - PowerBI</title>
 </head>
 
-<body>
+<body id="content" onload="load()">
     <header class="page-header">
         <p id="page-title">
             <a id="redirect" >
                 <img id="icon" class="logo-img">
-                <script>
-                    document.getElementById("icon").src = "https://" + window.location.hostname +"/theme-resources/assets/admin/layout/img/logo-app.png";
-                    document.getElementById("redirect").href = "https://" + window.location.hostname + "/portal/group/guest/momentum";
-                </script>
             </a>
         </p>
     </header>
