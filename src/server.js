@@ -15,11 +15,12 @@ const app = express();
 app.use(cookieParser());
 
 // Prepare server for Bootstrap, JQuery and PowerBI files
-app.use("/js", express.static("./node_modules/bootstrap/dist/js/")); // Redirect bootstrap JS
-app.use("/js", express.static("./node_modules/jquery/dist/")); // Redirect JS jQuery
-app.use("/js", express.static("./node_modules/powerbi-client/dist/")); // Redirect JS PowerBI
-app.use("/css", express.static("./node_modules/bootstrap/dist/css/")); // Redirect CSS bootstrap
-app.use("/public", express.static("./public/")); // Use custom JS and CSS files
+app.use("/js", express.static(path.join(__dirname,"../node_modules/bootstrap/dist/js/"))); // Redirect bootstrap JS
+app.use("/js", express.static(path.join(__dirname,"../node_modules/jquery/dist/"))); // Redirect JS jQuery
+app.use("/js", express.static(path.join(__dirname,"../node_modules/powerbi-client/dist/"))); // Redirect JS PowerBI
+app.use("/css", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css/"))); // Redirect CSS bootstrap
+app.use("/public", express.static(path.join(__dirname,'../public/'))); // Use custom JS and CSS files
+
 
 // specify the port in .env created at root dir, if no .env exists => default to port 5300
 const port = process.env.PORT || 5300;
