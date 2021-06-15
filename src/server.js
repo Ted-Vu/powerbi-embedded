@@ -192,7 +192,10 @@ app.get("/getEmbedToken", function (req, res) {
       if (validator.isAscii(queryData)) {
         let reportName = queryData.split("&")[0].split("=")[1];
         reportName = decodeURIComponent(reportName);
-        // await embedToken.configReportIdByName(reportName);
+
+        await embedToken.configReportIdByReportName(reportName);
+        await embedToken.configDatasetByReportName(reportName);
+
         let result = await embedToken.getEmbedInfo();
         res.status(result.status).send(result);
       } else {

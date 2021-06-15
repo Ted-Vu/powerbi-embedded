@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 // ----------------------------------------------------------------------------
-
+var sleep = require("sleep");
 const auth = require(__dirname + "/authentication.js");
 const config = require(__dirname + "/../config/config.json");
 const utils = require(__dirname + "/utils.js");
@@ -30,7 +30,29 @@ async function getAllReports() {
   };
 }
 
-async function configReportIdByName(reportName) {
+async function configDatasetByReportName(reportName) {
+  // single thread here
+  // sleep.sleep(5);
+
+  const reportsInGroupApi = `https://api.powerbi.com/v1.0/myorg/groups/${config.workspaceId}/reports`;
+  const headers = await getRequestHeader();
+
+  // Get report info by calling the PowerBI REST API
+  const result = await fetch(reportsInGroupApi, {
+    method: "GET",
+    headers: headers,
+  });
+
+  const resultJson = await result.json();
+  const reports = resultJson.value;
+  for (report of reports) {
+    if (report.name === reportName) {
+      config.datasetId = report.datasetId;
+    }
+  }
+}
+
+async function configReportIdByReportName(reportName) {
   const reportsInGroupApi = `https://api.powerbi.com/v1.0/myorg/groups/${config.workspaceId}/reports`;
   const headers = await getRequestHeader();
 
@@ -124,11 +146,12 @@ async function getEmbedParamsForSingleReport(
   }
 
   // Get Embed token multiple resources
-  reportEmbedConfig.embedToken = await getEmbedTokenForSingleReportSingleWorkspace(
-    reportId,
-    datasetIds,
-    workspaceId
-  );
+  reportEmbedConfig.embedToken =
+    await getEmbedTokenForSingleReportSingleWorkspace(
+      reportId,
+      datasetIds,
+      workspaceId
+    );
   return reportEmbedConfig;
 }
 
@@ -191,11 +214,12 @@ async function getEmbedParamsForMultipleReports(
   }
 
   // Get Embed token multiple resources
-  reportEmbedConfig.embedToken = await getEmbedTokenForMultipleReportsSingleWorkspace(
-    reportIds,
-    datasetIds,
-    workspaceId
-  );
+  reportEmbedConfig.embedToken =
+    await getEmbedTokenForMultipleReportsSingleWorkspace(
+      reportIds,
+      datasetIds,
+      workspaceId
+    );
   return reportEmbedConfig;
 }
 
@@ -397,6 +421,7 @@ async function getRequestHeader() {
 
 module.exports = {
   getEmbedInfo: getEmbedInfo,
-  configReportIdByName: configReportIdByName,
+  configReportIdByReportName: configReportIdByReportName,
   getAllReports: getAllReports,
+  configDatasetByReportName: configDatasetByReportName,
 };
