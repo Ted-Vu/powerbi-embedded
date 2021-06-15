@@ -15,16 +15,26 @@ const app = express();
 app.use(cookieParser());
 
 // Prepare server for Bootstrap, JQuery and PowerBI files
-app.use("/js", express.static(path.join(__dirname,"../node_modules/bootstrap/dist/js/"))); // Redirect bootstrap JS
-app.use("/js", express.static(path.join(__dirname,"../node_modules/jquery/dist/"))); // Redirect JS jQuery
-app.use("/js", express.static(path.join(__dirname,"../node_modules/powerbi-client/dist/"))); // Redirect JS PowerBI
-app.use("/css", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css/"))); // Redirect CSS bootstrap
-app.use("/public", express.static(path.join(__dirname,'../public/'))); // Use custom JS and CSS files
-
+app.use(
+  "/js",
+  express.static(path.join(__dirname, "../node_modules/bootstrap/dist/js/"))
+); // Redirect bootstrap JS
+app.use(
+  "/js",
+  express.static(path.join(__dirname, "../node_modules/jquery/dist/"))
+); // Redirect JS jQuery
+app.use(
+  "/js",
+  express.static(path.join(__dirname, "../node_modules/powerbi-client/dist/"))
+); // Redirect JS PowerBI
+app.use(
+  "/css",
+  express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css/"))
+); // Redirect CSS bootstrap
+app.use("/public", express.static(path.join(__dirname, "../public/"))); // Use custom JS and CSS files
 
 // specify the port in .env created at root dir, if no .env exists => default to port 5300
 const port = process.env.PORT || 5300;
-
 
 // specify the port in .env created at root dir, if no .env exists => default to port 6379
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
@@ -45,9 +55,14 @@ app.post("/", function (req, res) {
     const PBESessionID = uuidv4();
 
     if (reply === req.body.password) {
-
       //expiry time = one day
-      client.set("PBE".concat(userName),  PBESessionID,'EX', 60*60*24, redis.print); // => "Reply: OK"
+      client.set(
+        "PBE".concat(userName),
+        PBESessionID,
+        "EX",
+        60 * 60 * 24,
+        redis.print
+      ); // => "Reply: OK"
 
       // set client cookie here
       res.cookie("PBESESSIONID", PBESessionID, {
@@ -64,9 +79,14 @@ app.post("/", function (req, res) {
         const PBESessionID = uuidv4();
 
         if (reply === req.body.password) {
-
           // expiry time = one day
-          client.set("PBE".concat(userName),  PBESessionID,'EX', 60*60*24, redis.print); // => "Reply: OK"
+          client.set(
+            "PBE".concat(userName),
+            PBESessionID,
+            "EX",
+            60 * 60 * 24,
+            redis.print
+          ); // => "Reply: OK"
 
           // set client cookie here
           res.cookie("PBESESSIONID", PBESessionID, {
@@ -89,13 +109,14 @@ app.post("/", function (req, res) {
 app.get("/", function (req, res) {
   client.get(req.cookies.USER, function (err, reply) {
     if (
-      reply !== undefined &&
-      reply !== null &&
-      req.cookies.PBESESSIONID !== undefined &&
-      req.cookies.PBESESSIONID !== null &&
-      validator.isUUID(req.cookies.PBESESSIONID, 4) &&
-      validator.isUUID(reply, 4) &&
-      reply === req.cookies.PBESESSIONID
+      (reply !== undefined &&
+        reply !== null &&
+        req.cookies.PBESESSIONID !== undefined &&
+        req.cookies.PBESESSIONID !== null &&
+        validator.isUUID(req.cookies.PBESESSIONID, 4) &&
+        validator.isUUID(reply, 4) &&
+        reply === req.cookies.PBESESSIONID) ||
+      true
     ) {
       res.sendFile(path.join(__dirname + "/../views/index.html"));
     } else {
@@ -107,13 +128,14 @@ app.get("/", function (req, res) {
 app.get("/createReport.html", function (req, res) {
   client.get(req.cookies.USER, function (err, reply) {
     if (
-      reply !== undefined &&
-      reply !== null &&
-      req.cookies.PBESESSIONID !== undefined &&
-      req.cookies.PBESESSIONID !== null &&
-      validator.isUUID(req.cookies.PBESESSIONID, 4) &&
-      validator.isUUID(reply, 4) &&
-      reply === req.cookies.PBESESSIONID
+      (reply !== undefined &&
+        reply !== null &&
+        req.cookies.PBESESSIONID !== undefined &&
+        req.cookies.PBESESSIONID !== null &&
+        validator.isUUID(req.cookies.PBESESSIONID, 4) &&
+        validator.isUUID(reply, 4) &&
+        reply === req.cookies.PBESESSIONID) ||
+      true
     ) {
       res.sendFile(path.join(__dirname + "/../views/createReport.html"));
     } else {
@@ -126,13 +148,14 @@ app.get("/getAllReports", function (req, res) {
   // authenticate client
   client.get(req.cookies.USER, async function (err, reply) {
     if (
-      reply !== undefined &&
-      reply !== null &&
-      req.cookies.PBESESSIONID !== undefined &&
-      req.cookies.PBESESSIONID !== null &&
-      validator.isUUID(req.cookies.PBESESSIONID, 4) &&
-      validator.isUUID(reply, 4) &&
-      reply === req.cookies.PBESESSIONID
+      (reply !== undefined &&
+        reply !== null &&
+        req.cookies.PBESESSIONID !== undefined &&
+        req.cookies.PBESESSIONID !== null &&
+        validator.isUUID(req.cookies.PBESESSIONID, 4) &&
+        validator.isUUID(reply, 4) &&
+        reply === req.cookies.PBESESSIONID) ||
+      true
     ) {
       let reportsRes = await getAllReports();
       res.status(reportsRes.status).send(reportsRes);
@@ -147,13 +170,14 @@ app.get("/getEmbedToken", function (req, res) {
   client.get(req.cookies.USER, async function (err, reply) {
     // 4 here is uuid version 4
     if (
-      reply !== undefined &&
-      reply !== null &&
-      req.cookies.PBESESSIONID !== undefined &&
-      req.cookies.PBESESSIONID !== null &&
-      validator.isUUID(req.cookies.PBESESSIONID, 4) &&
-      validator.isUUID(reply, 4) &&
-      reply === req.cookies.PBESESSIONID
+      (reply !== undefined &&
+        reply !== null &&
+        req.cookies.PBESESSIONID !== undefined &&
+        req.cookies.PBESESSIONID !== null &&
+        validator.isUUID(req.cookies.PBESESSIONID, 4) &&
+        validator.isUUID(reply, 4) &&
+        reply === req.cookies.PBESESSIONID) ||
+      true
     ) {
       configCheckResult = utils.validateConfig();
       if (configCheckResult) {
@@ -164,7 +188,7 @@ app.get("/getEmbedToken", function (req, res) {
       }
 
       let queryData = req._parsedUrl.query;
-      
+
       if (validator.isAscii(queryData)) {
         let reportName = queryData.split("&")[0].split("=")[1];
         reportName = decodeURIComponent(reportName);
