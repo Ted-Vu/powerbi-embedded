@@ -2,7 +2,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 // ----------------------------------------------------------------------------
-var sleep = require("sleep");
 const auth = require(__dirname + "/authentication.js");
 const config = require(__dirname + "/../config/config.json");
 const utils = require(__dirname + "/utils.js");
@@ -47,7 +46,7 @@ async function configDatasetByReportName(reportName) {
   const reports = resultJson.value;
   for (report of reports) {
     if (report.name === reportName) {
-      config.datasetId = report.datasetId;
+      return report.datasetId;
     }
   }
 }
@@ -56,7 +55,7 @@ async function configReportIdByReportName(reportName) {
   const reportsInGroupApi = `https://api.powerbi.com/v1.0/myorg/groups/${config.workspaceId}/reports`;
   const headers = await getRequestHeader();
 
-  // Get report info by calling the PowerBI REST API
+  // Get all reports info in a workspace by calling the PowerBI REST API
   const result = await fetch(reportsInGroupApi, {
     method: "GET",
     headers: headers,
@@ -66,7 +65,7 @@ async function configReportIdByReportName(reportName) {
   const reports = resultJson.value;
   for (report of reports) {
     if (report.name === reportName) {
-      config.reportId = report.id;
+      return report.id;
     }
   }
 }
@@ -75,19 +74,19 @@ async function configReportIdByReportName(reportName) {
  * Generate embed token and embed urls for reports
  * @return Details like Embed URL, Access token and Expiry
  */
-async function getEmbedInfo() {
+async function getEmbedInfo(reportId, datasetId) {
   // Get the Report Embed details
   try {
     // Get report details and embed token
     const embedParams = await getEmbedParamsForSingleReport(
       config.workspaceId,
-      config.reportId
+      reportId
     );
     return {
       accessToken: embedParams.embedToken.token,
       embedUrl: embedParams.reportsDetail,
       expiry: embedParams.embedToken.expiration,
-      datasetId: config.datasetId,
+      datasetId: datasetId,
       status: 200,
     };
   } catch (err) {

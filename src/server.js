@@ -175,24 +175,26 @@ app.get("/getEmbedToken", function (req, res) {
       validator.isUUID(reply, 4) &&
       reply === req.cookies.PBESESSIONID
     ) {
-      configCheckResult = utils.validateConfig();
-      if (configCheckResult) {
-        return {
-          status: 400,
-          error: configCheckResult,
-        };
-      }
-
       let queryData = req._parsedUrl.query;
 
       if (validator.isAscii(queryData)) {
         let reportName = queryData.split("&")[0].split("=")[1];
         reportName = decodeURIComponent(reportName);
+        reportName = reportName || "Demo 3 Report";
 
-        await embedToken.configReportIdByReportName(reportName);
-        await embedToken.configDatasetByReportName(reportName);
+        let reportId = await embedToken.configReportIdByReportName(reportName);
 
-        let result = await embedToken.getEmbedInfo();
+        configCheckResult = utils.validateConfig(reportId);
+        if (configCheckResult) {
+          return {
+            status: 400,
+            error: configCheckResult,
+          };
+        }
+
+        let datasetId = await embedToken.configDatasetByReportName(reportName);
+
+        let result = await embedToken.getEmbedInfo(reportId, datasetId);
         res.status(result.status).send(result);
       } else {
         res.sendFile(path.join(__dirname + "/../views/404.html"));
