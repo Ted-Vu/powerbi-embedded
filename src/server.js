@@ -109,14 +109,13 @@ app.post("/", function (req, res) {
 app.get("/", function (req, res) {
   client.get(req.cookies.USER, function (err, reply) {
     if (
-      (reply !== undefined &&
-        reply !== null &&
-        req.cookies.PBESESSIONID !== undefined &&
-        req.cookies.PBESESSIONID !== null &&
-        validator.isUUID(req.cookies.PBESESSIONID, 4) &&
-        validator.isUUID(reply, 4) &&
-        reply === req.cookies.PBESESSIONID) ||
-      true
+      reply !== undefined &&
+      reply !== null &&
+      req.cookies.PBESESSIONID !== undefined &&
+      req.cookies.PBESESSIONID !== null &&
+      validator.isUUID(req.cookies.PBESESSIONID, 4) &&
+      validator.isUUID(reply, 4) &&
+      reply === req.cookies.PBESESSIONID
     ) {
       res.sendFile(path.join(__dirname + "/../views/index.html"));
     } else {
@@ -128,14 +127,13 @@ app.get("/", function (req, res) {
 app.get("/createReport.html", function (req, res) {
   client.get(req.cookies.USER, function (err, reply) {
     if (
-      (reply !== undefined &&
-        reply !== null &&
-        req.cookies.PBESESSIONID !== undefined &&
-        req.cookies.PBESESSIONID !== null &&
-        validator.isUUID(req.cookies.PBESESSIONID, 4) &&
-        validator.isUUID(reply, 4) &&
-        reply === req.cookies.PBESESSIONID) ||
-      true
+      reply !== undefined &&
+      reply !== null &&
+      req.cookies.PBESESSIONID !== undefined &&
+      req.cookies.PBESESSIONID !== null &&
+      validator.isUUID(req.cookies.PBESESSIONID, 4) &&
+      validator.isUUID(reply, 4) &&
+      reply === req.cookies.PBESESSIONID
     ) {
       res.sendFile(path.join(__dirname + "/../views/createReport.html"));
     } else {
@@ -148,14 +146,13 @@ app.get("/getAllReports", function (req, res) {
   // authenticate client
   client.get(req.cookies.USER, async function (err, reply) {
     if (
-      (reply !== undefined &&
-        reply !== null &&
-        req.cookies.PBESESSIONID !== undefined &&
-        req.cookies.PBESESSIONID !== null &&
-        validator.isUUID(req.cookies.PBESESSIONID, 4) &&
-        validator.isUUID(reply, 4) &&
-        reply === req.cookies.PBESESSIONID) ||
-      true
+      reply !== undefined &&
+      reply !== null &&
+      req.cookies.PBESESSIONID !== undefined &&
+      req.cookies.PBESESSIONID !== null &&
+      validator.isUUID(req.cookies.PBESESSIONID, 4) &&
+      validator.isUUID(reply, 4) &&
+      reply === req.cookies.PBESESSIONID
     ) {
       let reportsRes = await getAllReports();
       res.status(reportsRes.status).send(reportsRes);
@@ -170,14 +167,13 @@ app.get("/getEmbedToken", function (req, res) {
   client.get(req.cookies.USER, async function (err, reply) {
     // 4 here is uuid version 4
     if (
-      (reply !== undefined &&
-        reply !== null &&
-        req.cookies.PBESESSIONID !== undefined &&
-        req.cookies.PBESESSIONID !== null &&
-        validator.isUUID(req.cookies.PBESESSIONID, 4) &&
-        validator.isUUID(reply, 4) &&
-        reply === req.cookies.PBESESSIONID) ||
-      true
+      reply !== undefined &&
+      reply !== null &&
+      req.cookies.PBESESSIONID !== undefined &&
+      req.cookies.PBESESSIONID !== null &&
+      validator.isUUID(req.cookies.PBESESSIONID, 4) &&
+      validator.isUUID(reply, 4) &&
+      reply === req.cookies.PBESESSIONID
     ) {
       configCheckResult = utils.validateConfig();
       if (configCheckResult) {
