@@ -28,7 +28,7 @@ $.ajax({
   },
 
   error: function (err) {
-      window.location.href = "https://" + window.location.hostname;
+    window.location.href = "https://" + window.location.hostname;
   },
 });
 
@@ -39,11 +39,8 @@ $("#create-button").on("click", function (e) {
   window.open("/createReport.html", "_blank");
 });
 
-
 $("#view-button").on("click", function (e) {
   e.preventDefault();
-
-  
 
   let reportName = document.getElementById("reportName").value;
 
@@ -124,7 +121,6 @@ $("#edit-button").on("click", function (e) {
     },
     dataType: "json",
     success: function (embedData) {
-      
       let reportLoadConfig = {
         type: "report",
         tokenType: models.TokenType.Embed,

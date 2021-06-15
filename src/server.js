@@ -15,16 +15,26 @@ const app = express();
 app.use(cookieParser());
 
 // Prepare server for Bootstrap, JQuery and PowerBI files
-app.use("/js", express.static(path.join(__dirname,"../node_modules/bootstrap/dist/js/"))); // Redirect bootstrap JS
-app.use("/js", express.static(path.join(__dirname,"../node_modules/jquery/dist/"))); // Redirect JS jQuery
-app.use("/js", express.static(path.join(__dirname,"../node_modules/powerbi-client/dist/"))); // Redirect JS PowerBI
-app.use("/css", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css/"))); // Redirect CSS bootstrap
-app.use("/public", express.static(path.join(__dirname,'../public/'))); // Use custom JS and CSS files
-
+app.use(
+  "/js",
+  express.static(path.join(__dirname, "../node_modules/bootstrap/dist/js/"))
+); // Redirect bootstrap JS
+app.use(
+  "/js",
+  express.static(path.join(__dirname, "../node_modules/jquery/dist/"))
+); // Redirect JS jQuery
+app.use(
+  "/js",
+  express.static(path.join(__dirname, "../node_modules/powerbi-client/dist/"))
+); // Redirect JS PowerBI
+app.use(
+  "/css",
+  express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css/"))
+); // Redirect CSS bootstrap
+app.use("/public", express.static(path.join(__dirname, "../public/"))); // Use custom JS and CSS files
 
 // specify the port in .env created at root dir, if no .env exists => default to port 5300
 const port = process.env.PORT || 5300;
-
 
 // specify the port in .env created at root dir, if no .env exists => default to port 6379
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
@@ -45,9 +55,14 @@ app.post("/", function (req, res) {
     const PBESessionID = uuidv4();
 
     if (reply === req.body.password) {
-
       //expiry time = one day
-      client.set("PBE".concat(userName),  PBESessionID,'EX', 60*60*24, redis.print); // => "Reply: OK"
+      client.set(
+        "PBE".concat(userName),
+        PBESessionID,
+        "EX",
+        60 * 60 * 24,
+        redis.print
+      ); // => "Reply: OK"
 
       // set client cookie here
       res.cookie("PBESESSIONID", PBESessionID, {
@@ -64,9 +79,14 @@ app.post("/", function (req, res) {
         const PBESessionID = uuidv4();
 
         if (reply === req.body.password) {
-
           // expiry time = one day
-          client.set("PBE".concat(userName),  PBESessionID,'EX', 60*60*24, redis.print); // => "Reply: OK"
+          client.set(
+            "PBE".concat(userName),
+            PBESessionID,
+            "EX",
+            60 * 60 * 24,
+            redis.print
+          ); // => "Reply: OK"
 
           // set client cookie here
           res.cookie("PBESESSIONID", PBESessionID, {
@@ -164,11 +184,14 @@ app.get("/getEmbedToken", function (req, res) {
       }
 
       let queryData = req._parsedUrl.query;
-      
+
       if (validator.isAscii(queryData)) {
         let reportName = queryData.split("&")[0].split("=")[1];
         reportName = decodeURIComponent(reportName);
-        // await embedToken.configReportIdByName(reportName);
+
+        await embedToken.configReportIdByReportName(reportName);
+        await embedToken.configDatasetByReportName(reportName);
+
         let result = await embedToken.getEmbedInfo();
         res.status(result.status).send(result);
       } else {
