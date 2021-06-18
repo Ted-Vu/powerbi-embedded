@@ -25,12 +25,12 @@ Licensed under the MIT license. -->
         	<form>
                 <div class="form-group">
                   <label for="reportName"><b>Report Name</b></label>
-                  <select name="reportName" id="reportName" class="form-control">
+                  <select name="reportName" id="reportName" class="form-control" onchange="loadReport();">
                   </select>
                 </div>
-                <button id="view-button" type="button" class="buttons-form">View</button>
-                <button id="edit-button" type="button" class="buttons-form">Edit</button>
-                <button id="create-button" type="button" class="buttons-form" >Create</button>
+                <button id="view-button" type="button" class="buttons-form" onclick="changeBtn('view-button');">View</button>
+                <button id="edit-button" type="button" class="buttons-form" onclick="changeBtn('edit-button');">Edit</button>
+                <button id="create-button" type="button" class="buttons-form"  >Create</button>
         	</form>        
 	</div>
     <header class="page-header">
@@ -51,6 +51,7 @@ Licensed under the MIT license. -->
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/powerbi.min.js"></script>
     <script src="../public/js/index.js"></script>
+    <script src="../public/js/utility.js"></script>
     <script>
     	function openNav() {
     	  	document.getElementById("mySidepanel").style.width = "250px";
@@ -59,6 +60,8 @@ Licensed under the MIT license. -->
     	function closeNav() {
       		document.getElementById("mySidepanel").style.width = "0";
     	}
+
+        
 
     	document.getElementById("view-button").click();
 	</script>
