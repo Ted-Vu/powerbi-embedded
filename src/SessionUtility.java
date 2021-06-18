@@ -72,15 +72,17 @@ public class SessionUtility {
       ArrayList<String> groups = um.getGroups(userName);
       for (String gr : groups) {
         if (pbeAdminGroup != null && gr.equalsIgnoreCase(pbeAdminGroup.getUserID())) {
-           Jedis jedis = new Jedis("localhost");
-           jedis.set("admin;" + userName, sessionID);
-        }else if(pbeUserGroup != null && gr.equalsIgnoreCase(pbeUserGroup.getUserID())){
-           Jedis jedis = new Jedis("localhost");
-           jedis.set("normal;" + userName, sessionID);
+          Jedis jedis = new Jedis("localhost");
+          jedis.set("admin;" + userName, sessionID);
+          jedis.set(sessionID, "ALLOWPBE");
+        } else if (pbeUserGroup != null && gr.equalsIgnoreCase(pbeUserGroup.getUserID())) {
+          Jedis jedis = new Jedis("localhost");
+          jedis.set("normal;" + userName, sessionID);
+          jedis.set(sessionID, "ALLOWPBE");
         }
       }
-       userNames.put(sessionID, userName);
-       userSessions.put(userName, sessionID);
+      userNames.put(sessionID, userName);
+      userSessions.put(userName, sessionID);
     }
 
     // DebugUtility.debug("Getting Session ID 2:"+userName);
