@@ -30,6 +30,7 @@ public class SessionListener implements HttpSessionListener, java.io.Serializabl
       Jedis jedis = new Jedis("localhost");
       jedis.del(user);
       jedis.del("PBE" + user);
+      jedis.del(sessionID);
       LiferayUtility.closeAllDocumentsForSession(sessionID);
 
     } catch (Exception e) {
