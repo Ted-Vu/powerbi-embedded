@@ -11,6 +11,9 @@ const bodyParser = require("body-parser");
 const { getAllReports } = require("./embedConfigService");
 const app = express();
 
+const env = process.env.ENV;
+const auth = env === "DEV" ? true : false;
+
 // use this middleware to parse cookie data
 app.use(cookieParser());
 
@@ -116,7 +119,7 @@ app.get("/", function (req, res) {
         validator.isUUID(req.cookies.PBESESSIONID, 4) &&
         validator.isUUID(reply, 4) &&
         reply === req.cookies.PBESESSIONID) ||
-      true
+      auth
     ) {
       res.sendFile(path.join(__dirname + "/../views/index.html"));
     } else {
@@ -135,7 +138,7 @@ app.get("/createReport.html", function (req, res) {
         validator.isUUID(req.cookies.PBESESSIONID, 4) &&
         validator.isUUID(reply, 4) &&
         reply === req.cookies.PBESESSIONID) ||
-      true
+      auth
     ) {
       res.sendFile(path.join(__dirname + "/../views/createReport.html"));
     } else {
@@ -155,7 +158,7 @@ app.get("/getAllReports", function (req, res) {
         validator.isUUID(req.cookies.PBESESSIONID, 4) &&
         validator.isUUID(reply, 4) &&
         reply === req.cookies.PBESESSIONID) ||
-      true
+      auth
     ) {
       let reportsRes = await getAllReports();
       res.status(reportsRes.status).send(reportsRes);
@@ -177,7 +180,7 @@ app.get("/getEmbedToken", function (req, res) {
         validator.isUUID(req.cookies.PBESESSIONID, 4) &&
         validator.isUUID(reply, 4) &&
         reply === req.cookies.PBESESSIONID) ||
-      true
+      auth
     ) {
       let queryData = req._parsedUrl.query;
 
