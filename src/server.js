@@ -212,13 +212,16 @@ app.get("/getEmbedToken", function (req, res) {
   });
 });
 
-app.get("/deleteReport", async function (req, res) {
-  let queryData = req._parsedUrl.query;
-  let reportName = queryData.split("&")[0].split("=")[1];
-  reportName = decodeURIComponent(reportName);
+app.get("/deleteReport", function (req, res) {
+  client.get(req.cookies.USER, async function (err, reply) {
+    let queryData = req._parsedUrl.query;
+    let reportName = queryData.split("&")[0].split("=")[1];
+    reportName = decodeURIComponent(reportName);
 
-  let reportId = await embedToken.configReportIdByReportName(reportName);
-  await embedToken.deleteReportInGroups(reportId);
+    let reportId = await embedToken.configReportIdByReportName(reportName);
+    let result = await embedToken.deleteReportInGroups(reportId);
+    res.status(result.status).send(result);
+  });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

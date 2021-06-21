@@ -197,7 +197,8 @@ $("#delete-button").on("click", function (e) {
       },
       dataType: "json",
       success: function () {
-        console.log("DEBUG");
+        console.log("DELETE SUCCESS GO HERE");
+
         $.ajax({
           type: "GET",
           url: "/getAllReports",
@@ -206,15 +207,19 @@ $("#delete-button").on("click", function (e) {
             withCredentials: true,
           },
           success: function (reportsRes) {
+            reportsInWorkspace = [];
             for (reports of reportsRes.reports) {
               reportsInWorkspace.push(reports.name);
             }
             $("#reportName").empty();
+
             $.each(reportsInWorkspace, function (i, p) {
               $("#reportName").append(
                 $(`<option value=${p}></option>`).val(p).html(p)
               );
             });
+
+            document.getElementById("view-button").click();
           },
 
           error: function (err) {
