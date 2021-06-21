@@ -212,4 +212,13 @@ app.get("/getEmbedToken", function (req, res) {
   });
 });
 
+app.get("/deleteReport", async function (req, res) {
+  let queryData = req._parsedUrl.query;
+  let reportName = queryData.split("&")[0].split("=")[1];
+  reportName = decodeURIComponent(reportName);
+
+  let reportId = await embedToken.configReportIdByReportName(reportName);
+  await embedToken.deleteReportInGroups(reportId);
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

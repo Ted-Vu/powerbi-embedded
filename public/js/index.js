@@ -177,3 +177,55 @@ $("#edit-button").on("click", function (e) {
     },
   });
 });
+
+$("#delete-button").on("click", function (e) {
+  e.preventDefault();
+
+  let reportName = document.getElementById("reportName").value;
+  if (
+    confirm(
+      "Are you sure you want to delete this report permanently ? This action cannot be reversed"
+    )
+  ) {
+    document.getElementById("mySidepanel").style.width = "0";
+
+    $.ajax({
+      type: "GET",
+      url: "/deleteReport",
+      data: {
+        reportName: reportName,
+      },
+      dataType: "json",
+      success: function () {
+        console.log("DEBUG");
+        $.ajax({
+          type: "GET",
+          url: "/getAllReports",
+          crossDomain: true,
+          xhrFields: {
+            withCredentials: true,
+          },
+          success: function (reportsRes) {
+            for (reports of reportsRes.reports) {
+              reportsInWorkspace.push(reports.name);
+            }
+            $("#reportName").empty();
+            $.each(reportsInWorkspace, function (i, p) {
+              $("#reportName").append(
+                $(`<option value=${p}></option>`).val(p).html(p)
+              );
+            });
+          },
+
+          error: function (err) {
+            window.location.href = "https://" + window.location.hostname;
+          },
+        });
+      },
+      error: function (err) {
+        alert("Your PBE Session expired you will be redirected");
+        window.location.href = "https://" + window.location.hostname;
+      },
+    });
+  }
+});

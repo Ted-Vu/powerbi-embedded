@@ -51,6 +51,16 @@ async function configDatasetByReportName(reportName) {
   }
 }
 
+async function deleteReportInGroups(reportId) {
+  const deleteReportAPI = `https://api.powerbi.com/v1.0/myorg/groups/${config.workspaceId}/reports/${reportId}`;
+  const headers = await getRequestHeader();
+  console.log("API ENDPOINT: " + deleteReportAPI);
+  await fetch(deleteReportAPI, {
+    method: "DELETE",
+    headers: headers,
+  });
+}
+
 async function configReportIdByReportName(reportName) {
   const reportsInGroupApi = `https://api.powerbi.com/v1.0/myorg/groups/${config.workspaceId}/reports`;
   const headers = await getRequestHeader();
@@ -423,4 +433,5 @@ module.exports = {
   configReportIdByReportName: configReportIdByReportName,
   getAllReports: getAllReports,
   configDatasetByReportName: configDatasetByReportName,
+  deleteReportInGroups: deleteReportInGroups,
 };
