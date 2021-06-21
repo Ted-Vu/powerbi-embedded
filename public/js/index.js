@@ -25,6 +25,8 @@ $.ajax({
     $.each(reportsInWorkspace, function (i, p) {
       $("#reportName").append($(`<option value=${p}></option>`).val(p).html(p));
     });
+
+    document.getElementById("view-button").click();
   },
 
   error: function (err) {
@@ -43,6 +45,7 @@ $("#view-button").on("click", function (e) {
   e.preventDefault();
 
   let reportName = document.getElementById("reportName").value;
+  console.log("REPORT NAME: " + reportName);
 
   $.ajax({
     type: "GET",
