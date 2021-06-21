@@ -239,17 +239,23 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
                             	if(menuChildNode.toString().trim().equals("Analytics"))
                             	{
                             		isAnalytics = true;
+									nodeValid = false;
                             	}
 
                             	//DebugUtility.debug("menuChildNode:"+menuChildNode.toString());
                             	////DebugUtility.debug("5 menuLink:"+menuChildNode.getChildren().next().toString().trim());
 
                             String classs = "menu-dropdown classic-menu-dropdown"; String other_class ="data-hover='megamenu-dropdown' data-close-others='true' data-toggle='dropdown'"; String iClass ="fa fa-angle-down";
-                            if(("".equals(menuChildNode.getChildren().next().toString().trim()) || "null".equals(menuChildNode.getChildren().next().toString().trim()))){
+
+
+                            if(!isAnalytics && ("".equals(menuChildNode.getChildren().next().toString().trim()) || "null".equals(menuChildNode.getChildren().next().toString().trim())) ){
                                 classs =  "menu-dropdown";
                                 other_class = "";
                                 iClass = "fa";
                             }
+
+														System.out.println("CURRENT NODE: " + menuChildNode.toString().trim().equals("Analytics"));
+														System.out.println(classs + " " + other_class + " "+iClass);
 
 
                             String rootHref = " href='javascript:;'";
@@ -264,7 +270,7 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
 		</a> <%
                       		if(!nodeValid){
 
-                            	if(menuChildren_2 != null){ %>
+                            	if(menuChildren_2 != null || isAnalytics){ %>
 
 			<ul class="dropdown-menu pull-left firstLevelMenuQMS">
                <%
@@ -304,7 +310,7 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
                     </li>
 
                 <%  }%>
-                  
+
 
                  <form   id="form-analytics" style="display: none;"  target="_blank" action="" method="POST">
                             <input type="text" style="display: none;" id="username" name="username" value="<%=  user.getEmailAddress() %>"  />
@@ -319,7 +325,7 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
                     })
 
                 </script>
-				<% while(menuChildren_2.hasNext())
+				<% while(menuChildren_2 != null && menuChildren_2.hasNext())
                                         {
 
                                             Node menuChildNode_2 = menuChildren_2.next();
@@ -392,7 +398,7 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
 					<ul class="dropdown-menu"
 						style="top:-<%= topPositionCount*35 %>px; left: 50%; <% if(menuChildNode_2.getChildrenList().size() > 8){out.print("overflow-y: scroll; height:200px;");} %>">
 
-						<% while(menuChildren_3.hasNext())
+						<% while(menuChildren_3 != null && menuChildren_3.hasNext())
                                         			{
 
                                             			Node menuChildNode_3 = menuChildren_3.next();
