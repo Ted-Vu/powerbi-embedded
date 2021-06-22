@@ -29,6 +29,20 @@ async function getAllReports() {
   };
 }
 
+async function getDatasourcesInGroup() {
+  const dataSourceInGroupApi = `https://api.powerbi.com/v1.0/myorg/groups/${config.workspaceId}/datasets/5b498bae-8904-4808-9ecc-ed2fc9e165db/datasources`;
+  const headers = await getRequestHeader();
+
+  // Get report info by calling the PowerBI REST API
+  const result = await fetch(dataSourceInGroupApi, {
+    method: "GET",
+    headers: headers,
+  });
+
+  const resultJson = await result.json();
+  console.log(resultJson);
+}
+
 async function configDatasetByReportName(reportName) {
   // single thread here
   // sleep.sleep(5);
@@ -423,4 +437,5 @@ module.exports = {
   configReportIdByReportName: configReportIdByReportName,
   getAllReports: getAllReports,
   configDatasetByReportName: configDatasetByReportName,
+  getDatasourcesInGroup: getDatasourcesInGroup,
 };

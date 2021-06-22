@@ -177,3 +177,23 @@ $("#edit-button").on("click", function (e) {
     },
   });
 });
+
+$("#datasources-button").on("click", function (e) {
+  e.preventDefault();
+
+  let reportName = document.getElementById("reportName").value;
+
+  $.ajax({
+    type: "GET",
+    url: "/getDatasource",
+    data: {
+      reportName: reportName,
+    },
+    dataType: "json",
+    success: function (embedData) {},
+    error: function (err) {
+      alert("Your PBE Session expired you will be redirected");
+      window.location.href = "https://" + window.location.hostname;
+    },
+  });
+});

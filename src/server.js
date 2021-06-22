@@ -168,6 +168,12 @@ app.get("/getAllReports", function (req, res) {
   });
 });
 
+app.get("/getDatasource", function (req, res) {
+  client.get(req.cookies.USER, async function (err, reply) {
+    await embedToken.getDatasourcesInGroup();
+  });
+});
+
 // exposed REST APIs from which client can call, here client call to get the embed token, 2 APIs called client-server, server-powerBI
 app.get("/getEmbedToken", function (req, res) {
   client.get(req.cookies.USER, async function (err, reply) {
