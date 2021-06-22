@@ -218,6 +218,9 @@ app.get("/deleteReport", function (req, res) {
     reportName = decodeURIComponent(reportName);
 
     let reportId = await embedToken.configReportIdByReportName(reportName);
+    let datasetID = await embedToken.getDatasetIDFromReportID(reportId);
+
+    let resultData = await embedToken.deleteDatasetInGroups(datasetID);
     let result = await embedToken.deleteReportInGroups(reportId);
     res.status(result.status).send(result);
   });

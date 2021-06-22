@@ -29,6 +29,19 @@ async function getAllReports() {
   };
 }
 
+async function getDatasetIDFromReportID(reportId) {
+  const reportByIdApi = `https://api.powerbi.com/v1.0/myorg/groups/${config.workspaceId}/reports/${reportId}`;
+  const headers = await getRequestHeader();
+
+  const result = await fetch(reportByIdApi, {
+    method: "GET",
+    headers: headers,
+  });
+
+  const resultJson = await result.json();
+  return resultJson.datasetId;
+}
+
 async function configDatasetByReportName(reportName) {
   // single thread here
   // sleep.sleep(5);
@@ -59,6 +72,18 @@ async function deleteReportInGroups(reportId) {
     headers: headers,
   });
 
+  return {
+    status: 200,
+  };
+}
+
+async function deleteDatasetInGroups(datasetID) {
+  const deleteDatasetAPI = `https://api.powerbi.com/v1.0/myorg/groups/${config.workspaceId}/datasets/${datasetID}`;
+  const headers = await getRequestHeader();
+  const status = await fetch(deleteDatasetAPI, {
+    method: "DELETE",
+    headers: headers,
+  });
   return {
     status: 200,
   };
@@ -437,4 +462,6 @@ module.exports = {
   getAllReports: getAllReports,
   configDatasetByReportName: configDatasetByReportName,
   deleteReportInGroups: deleteReportInGroups,
+  getDatasetIDFromReportID: getDatasetIDFromReportID,
+  deleteDatasetInGroups: deleteDatasetInGroups,
 };
