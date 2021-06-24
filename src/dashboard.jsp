@@ -301,6 +301,8 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
 									allowPBE = true;
 								}
 
+								String pbeHostName = "https://fcnpbe.momentumsystems.com.au/";
+
 
 							  %>
                 <% if(isAnalytics && allowPBE) {%>
@@ -312,13 +314,13 @@ public String callFunction(Node viewSubCategory, int level, String viewListOutpu
                 <%  }%>
 
 
-                 <form   id="form-analytics" style="display: none;"  target="_blank" action="" method="POST">
+                 <form   id="form-analytics" style="display: none;"  target="_blank" action="<%=  pbeHostName %>" method="POST">
                             <input type="text" style="display: none;" id="username" name="username" value="<%=  user.getEmailAddress() %>"  />
                             <input type="text" style="display: none;" id="password" name="password" value="<%= JSESSIONID %>"/>
                             <button id="PowerBI-button">PowerBI</button>
                 </form>
                  <script>
-                    document.getElementById("form-analytics").action = 'https://' + "fcnpbe.momentumsystems.com.au" +":443/";
+                    // document.getElementById("form-analytics").action = <%= pbeHostName %> +":443/";
                     console.log(document.getElementById("form-analytics").action);
                     document.getElementById("PowerBI-link").addEventListener("click",function(){
                         document.getElementById("PowerBI-button").click();
